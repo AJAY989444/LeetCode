@@ -1,23 +1,22 @@
 class Solution {
     public int rob(int[] nums) {
-        int[] dp = new int[nums.length];
-        Arrays.fill(dp, -1);
-
-        return solve(nums, 0, dp);
+        int[] dp = new int[nums.length + 1];
+        Arrays.fill(dp,-1);
+        return Robber(nums,0,dp);
     }
 
-    public int solve(int[] nums, int i, int[] dp) {
-        if (i >= nums.length) {
+    public int Robber(int[] nums, int i,int[] dp) {
+        if(i >= nums.length) {
             return 0;
         }
 
-        if (dp[i] != -1) { // DP
+        if(dp[i] != -1) {
             return dp[i];
         }
 
-        int robbed = nums[i] + solve(nums, i + 2, dp);
-        int notRobbed = solve(nums, i + 1, dp);
+        int rob = nums[i] + Robber(nums, i + 2,dp);
+        int not = Robber(nums,i + 1,dp);
 
-        return dp[i] = Math.max(robbed, notRobbed);
+        return dp[i] = Math.max(rob, not);
     }
 }
