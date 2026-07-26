@@ -1,22 +1,28 @@
 class Solution {
+
     public int rob(int[] nums) {
-       int[] dp = new int[nums.length];
-       Arrays.fill(dp,-1);
-       return robb(nums, 0,dp);
+        return RobberBU(nums);
     }
 
-    public int robb(int[] nums, int i, int[] dp) {
-        if(i >= nums.length) {
-            return 0;
+    public static int RobberBU(int[] arr) {
+
+        if (arr.length == 1) {
+            return arr[0];
         }
 
-        if(dp[i] != -1) {
-            return dp[i];
+        int[] dp = new int[arr.length];
+
+        dp[0] = arr[0];
+        dp[1] = Math.max(arr[0], arr[1]);
+
+        for (int i = 2; i < dp.length; i++) {
+
+            int rob = arr[i] + dp[i - 2];
+            int dont_rob = dp[i - 1];
+
+            dp[i] = Math.max(rob, dont_rob);
         }
 
-        int rob = nums[i] + robb(nums,i + 2, dp);
-        int not = robb(nums, i + 1, dp);
-
-        return dp[i] = Math.max(rob,not); 
+        return dp[dp.length - 1];
     }
 }
