@@ -1,34 +1,31 @@
 class Solution {
     public int change(int amount, int[] coins) {
-        int[][] dp = new int[amount + 1][coins.length];
-        for(int[] row : dp) {
-            Arrays.fill(row,-1);
-        }
-        return coin(coins,amount,0,dp);
+        return coin(coins,amount);
     }
 
-    public int coin(int[] coin, int amount, int idx, int[][] dp) {
-        if(amount == 0) {
-            return 1;
+    public int coin(int[] coin, int amount) {
+
+        int[][] dp = new int[amount + 1][coin.length + 1];
+
+        for(int i = 0; i < dp[0].length; i++) {
+            dp[0][i] = 1;
         }
 
-        if(idx == coin.length) {
-            return 0;
+        for(int am = 1; am < dp.length; am++) { // amount
+            for(int i = 1; i < dp[0].length; i++) { // coin
+                int inc = 0;
+                int exc = 0;
+
+                if(am >= coin[i - 1]) {
+                    inc = dp[am - coin[i - 1]][i];
+                }
+
+                exc = dp[am][i - 1];
+
+                dp[am][i] = inc + exc;
+            }
         }
 
-        if(dp[amount][idx] != -1) {
-            return dp[amount][idx];
-        }
-
-        int inc = 0;
-        int exc = 0;
-
-        if(amount >= coin[idx]) {
-        inc = coin(coin,amount - coin[idx],idx,dp);
-        }
-
-        exc = coin(coin, amount, idx + 1,dp);
-
-        return dp[amount][idx] = inc + exc;
+        return dp[dp.length - 1][dp[0].length - 1];
     }
 }
